@@ -1,7 +1,6 @@
 import React, {Component} from "react";
-import {Button, FormGroup, FormControl, ControlLabel} from "react-bootstrap";
-import "./Login.css";
-import axios from 'axios';
+import {Button, FormGroup, FormControl, ControlLabel, PageHeader} from "react-bootstrap";
+import axiosInstance from "../axiosInstance";
 import {config} from '../../constants/config';
 import history from '../history';
 
@@ -30,9 +29,8 @@ class Login extends Component {
 
         const authorizationHeader = btoa(this.state.username + ':' + this.state.password);
 
-        axios.get(config.apiUrl + '/principal', {
-            headers: {'Authorization': 'Basic ' + authorizationHeader, 'X-Requested-With': 'XMLHttpRequest'},
-            withCredentials: true
+        axiosInstance.get(`${config.apiUrl}/principal`, {
+            headers: {'Authorization': 'Basic ' + authorizationHeader}
         })
             .then(response => {
                 console.log(response);
@@ -46,7 +44,10 @@ class Login extends Component {
 
     render() {
         return (
-            <div className="Login">
+            <div className="col-md-4 col-md-offset-4">
+                <PageHeader>
+                    Inloggen
+                </PageHeader>
                 <form onSubmit={this.handleSubmit}>
                     <FormGroup controlId="username" bsSize="large">
                         <ControlLabel>Gebruikersnaam</ControlLabel>
