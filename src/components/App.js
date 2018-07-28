@@ -12,7 +12,7 @@ import {PrivateRoute} from "./PrivateRoute";
 
 class App extends Component {
     render() {
-        let navHeader = localStorage.getItem('isAuthenticated') === 'true' ? <Header/> : '';
+        let navHeader = sessionStorage.getItem('isAuthenticated') === 'true' ? <Header/> : '';
 
         return <div>
             {navHeader}

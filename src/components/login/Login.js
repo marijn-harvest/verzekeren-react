@@ -36,11 +36,11 @@ class Login extends Component {
         })
             .then(response => {
                 console.log(response);
-                localStorage.setItem('isAuthenticated', 'true');
+                sessionStorage.setItem('isAuthenticated', 'true');
                 history.push('/auto-verzekering');
             }).catch(error => {
             console.log(error);
-            localStorage.setItem('isAuthenticated', 'false');
+            sessionStorage.setItem('isAuthenticated', 'false');
         });
     };
 
