@@ -2,8 +2,21 @@ import React, {Component} from "react";
 import {Button, FormGroup, PageHeader, Radio} from "react-bootstrap";
 import {config} from "../../constants/config";
 import axiosInstance from "../axiosInstance";
+import {setAutoVerzekeringType, setAutoVerzekeringTypeFetched} from "../../actions";
+import {connect} from "react-redux";
 
-class AutoVerzekering extends Component {
+const mapStateToProps = state => {
+    return {type_fetched: state.auto_verzekering_type_fetched, type: state.auto_verzekering_type};
+};
+
+const mapDispatchToProps = dispatch => {
+    return {
+        setAutoVerzekeringType: type => dispatch(setAutoVerzekeringType(type)),
+        setAutoVerzekeringTypeFetched: () => dispatch(setAutoVerzekeringTypeFetched())
+    };
+};
+
+class ConnectedAutoVerzekering extends Component {
     constructor(props) {
         super(props);
 
@@ -14,18 +27,25 @@ class AutoVerzekering extends Component {
     }
 
     componentDidMount() {
-        axiosInstance.get(`${config.apiUrl}/auto-verzekering`).then(function (response) {
-            if (response.data.type) {
-                this.setState({type: response.data.type, submitMessage: "Wijzig auto verzekering"});
-            }
-        }.bind(this));
+        if (!this.props.type_fetched) {
+            axiosInstance.get(`${config.apiUrl}/auto-verzekering`).then(function (response) {
+                this.props.setAutoVerzekeringTypeFetched();
+                if (response.data.type) {
+                    this.props.setAutoVerzekeringType(response.data.type);
+                    this.setState({type: response.data.type, submitMessage: "Wijzig auto verzekering"});
+                }
+            }.bind(this));
+        } else if (this.props.type) {
+            this.setState({type: this.props.type, submitMessage: "Wijzig auto verzekering"});
+        }
     }
 
     handleSubmit = async event => {
         event.preventDefault();
 
-        axiosInstance.post(`${config.apiUrl}/auto-verzekering`, this.state).then(function () {
-            this.setState({submitMessage: "Wijzig auto verzekering"})
+        axiosInstance.post(`${config.apiUrl}/auto-verzekering`, {type: this.state.type}).then(function () {
+            this.props.setAutoVerzekeringType(this.state.type);
+            this.setState({submitMessage: "Wijzig auto verzekering"});
         }.bind(this));
     };
 
@@ -61,5 +81,7 @@ class AutoVerzekering extends Component {
         );
     }
 }
+
+const AutoVerzekering = connect(mapStateToProps, mapDispatchToProps)(ConnectedAutoVerzekering);
 
 export default AutoVerzekering;
