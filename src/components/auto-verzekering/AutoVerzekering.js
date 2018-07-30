@@ -6,7 +6,7 @@ import {setAutoVerzekeringType, setAutoVerzekeringTypeFetched} from "../../actio
 import {connect} from "react-redux";
 
 const mapStateToProps = state => {
-    return {type_fetched: state.auto_verzekering_type_fetched, type: state.auto_verzekering_type};
+    return {type_fetched: state.autoVerzekering.type_fetched, type: state.autoVerzekering.type};
 };
 
 const mapDispatchToProps = dispatch => {
@@ -28,25 +28,25 @@ class ConnectedAutoVerzekering extends Component {
 
     componentDidMount() {
         if (!this.props.type_fetched) {
-            axiosInstance.get(`${config.apiUrl}/auto-verzekering`).then(function (response) {
+            axiosInstance.get(`${config.apiUrl}/auto-verzekering`).then((response) => {
                 this.props.setAutoVerzekeringTypeFetched();
                 if (response.data.type) {
                     this.props.setAutoVerzekeringType(response.data.type);
                     this.setState({type: response.data.type, submitMessage: "Wijzig auto verzekering"});
                 }
-            }.bind(this));
+            });
         } else if (this.props.type) {
             this.setState({type: this.props.type, submitMessage: "Wijzig auto verzekering"});
         }
     }
 
-    handleSubmit = async event => {
+    handleSubmit(event) {
         event.preventDefault();
 
-        axiosInstance.post(`${config.apiUrl}/auto-verzekering`, {type: this.state.type}).then(function () {
+        axiosInstance.post(`${config.apiUrl}/auto-verzekering`, {type: this.state.type}).then(() => {
             this.props.setAutoVerzekeringType(this.state.type);
             this.setState({submitMessage: "Wijzig auto verzekering"});
-        }.bind(this));
+        });
     };
 
     handleTypeChange = event => {
@@ -59,7 +59,7 @@ class ConnectedAutoVerzekering extends Component {
                 <PageHeader>
                     Auto Verzekering
                 </PageHeader>
-                <form onSubmit={this.handleSubmit}>
+                <form onSubmit={(event) => this.handleSubmit(event)}>
                     <FormGroup>
                         <Radio name="type" value="WA" checked={this.state.type === 'WA'}
                                onChange={this.handleTypeChange} inline>

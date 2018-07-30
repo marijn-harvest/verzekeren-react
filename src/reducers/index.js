@@ -1,19 +1,7 @@
-import {SET_AUTO_VERZEKERING_TYPE, SET_AUTO_VERZEKERING_TYPE_FETCHED} from "../constants/action-types";
+import autoVerzekeringReducer from "./autoVerzekeringReducer";
+import {combineReducers} from "redux";
+import claimsReducer from "./claimsReducer";
 
-const initialState = {
-    auto_verzekering_type: "",
-    auto_verzekering_type_fetched: false
-};
-
-const rootReducer = (state = initialState, action) => {
-    switch (action.type) {
-        case SET_AUTO_VERZEKERING_TYPE:
-            return {...state, auto_verzekering_type: action.payload};
-        case SET_AUTO_VERZEKERING_TYPE_FETCHED:
-            return {...state, auto_verzekering_type_fetched: action.payload};
-        default:
-            return state;
-    }
-};
+const rootReducer = combineReducers({autoVerzekering: autoVerzekeringReducer, claims: claimsReducer});
 
 export default rootReducer;
