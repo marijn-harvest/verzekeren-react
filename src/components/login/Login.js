@@ -32,12 +32,10 @@ class Login extends Component {
         axiosInstance.get(`${config.apiUrl}/principal`, {
             headers: {'Authorization': 'Basic ' + authorizationHeader}
         })
-            .then(response => {
-                console.log(response);
+            .then(() => {
                 sessionStorage.setItem('isAuthenticated', 'true');
                 history.push('/auto-verzekering');
-            }).catch(error => {
-            console.log(error);
+            }).catch(() => {
             sessionStorage.setItem('isAuthenticated', 'false');
         });
     };

@@ -9,6 +9,7 @@ import Claims from './claims/Claims';
 import Login from './login/Login';
 import Profiel from './profiel/Profiel';
 import {PrivateRoute} from "./PrivateRoute";
+import AddClaim from "./claims/AddClaim";
 
 class App extends Component {
     render() {
@@ -59,6 +60,7 @@ const Main = () => (
             <Route path='/register' component={Register}/>
             <PrivateRoute path='/auto-verzekering' component={AutoVerzekering}/>
             <PrivateRoute path='/claims' component={Claims}/>
+            <PrivateRoute path='/add-claim' component={AddClaim}/>
             <PrivateRoute path='/profiel' component={Profiel}/>
         </Switch>
     </main>
